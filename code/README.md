@@ -1,4 +1,4 @@
-# SCC352 Coursework Code 
+# Code 
 
 ---
 
