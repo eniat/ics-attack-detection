@@ -51,11 +51,11 @@ This script calls overwrite.py and attacks the nodes given in noisy.py. This is 
 Before running graph.py, random_forest.py or kalsum.py, this virtual environment must be created.
 
 ```bash
-mkdir scc352
-cd scc352
+mkdir detection
+cd detection
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install pandas scikit-learn matplotlib filterpy
+python -m pip install requirements.txt
 ```
 
 ---
