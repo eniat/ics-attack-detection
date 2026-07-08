@@ -4,7 +4,7 @@
 
 ## 1. Running Polling 
 
-Polling must be ran on the Asherah vitrual machine.
+Polling must be run against the simulated OPC UA environment.
 
 Start Polling with:
 
@@ -12,15 +12,21 @@ Start Polling with:
 python polling.py
 ```
 
-This will generate .csv files for all features on the OPC UA server. This needs to be ran multiple times changing the .csv file name each time, under different conditions to later be used in graphs.py and for the detection algorithms. 
+This will generate .csv files for all features on the OPC UA server. Collect datasets under each operating condition before running the detection algorithms.
 
-For example this needs to be ran three times with the following names "normal_all.csv", "attack_all.csv", "attack_SG.csv" first during normal behaviour second during stealthy attack and third during a noisy attack. And that's just for the creation of the overlay graphs.
+For example, polling can be run three times to create the following datasets:
+
+- normal_all.csv – normal plant behaviour
+- attack_all.csv – stealthy attack
+- attack_SG.csv – noisy overwrite attack
+
+These datasets are then used to generate the overlay graphs and evaluate the detection algorithms.
 
 ---
 
 ## 2. Running Stealth Attack
 
-Attack must be ran on the Asherah vitrual machine.
+Attack must be run against the simulated OPC UA environment.
 
 To launch the attack:
 
@@ -28,13 +34,13 @@ To launch the attack:
 python attack.py
 ```
 
-This script calls stealthy.py and attacks the nodes given in attack.py
+This script calls stealthy.py to apply the configured stealthy drift attack against the target OPC UA nodes defined in attack.py.
 
 ---
 
 ## 3. Running Noisy Attack
 
-Attack must be ran on the Asherah vitrual machine.
+Attack must be run against the simulated OPC UA environment.
 
 To launch the attack:
 
@@ -42,11 +48,11 @@ To launch the attack:
 python noisy.py
 ```
 
-This script calls overwrite.py and attacks the nodes given in noisy.py. This is to be compared against the stealthy attack. Most of overwrite.py isn't used for this just the overwrite_attack function.
+This script calls overwrite.py to perform a direct overwrite attack against the configured OPC UA nodes. The resulting dataset provides a baseline for comparison with the stealthy attack.
 
 ---
 
-## 4. Enviroment Set up for Graphs and Detection algorithms
+## 4. Environment Setup for Graphs and Detection Algorithms
 
 Before running graph.py, random_forest.py or kalsum.py, this virtual environment must be created.
 
@@ -55,14 +61,21 @@ mkdir detection
 cd detection
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ---
 
 ## 5. Running Detection Algorithms
 
-Once polling has generated the desired .csv files then these can be run. The attack csv is called attack_all.csv in both files and the normal behaviour is called normal_all.csv. This can be editied and changed depending on what csv files are being compared but they need to be changed where ever they are mentioned elsewhere.
+Once the required CSV datasets have been collected, the detection algorithms can be executed.
+
+By default, both detector scripts expect:
+
+- normal_all.csv
+- attack_all.csv
+
+These filenames can be changed, provided the corresponding file references in the scripts are also updated.
 
 ### Random Forest 
 
@@ -70,7 +83,7 @@ Once polling has generated the desired .csv files then these can be run. The att
 python random_forest.py
 ```
 
-This will return a classification report that gets printed to the console and a rf_scores.csv file that details the probability of attack for each row in the csv.
+This prints the classification report to the console and generates rf_scores.csv, which contains the attack probability for each sample.
 
 ---
 
@@ -80,20 +93,27 @@ This will return a classification report that gets printed to the console and a 
 python kalsum.py
 ```
 
-This will return a detection summary for both kalman and CUSUM in the console and two .csv files will be created one for each. 
+This prints detection summaries for both the Kalman residual method and CUSUM and generates CSV files containing the detector outputs.
 
 ---
 
-The output csv file names should be changed to detail what is being compared in the detection call.
+Rename the output CSV files as required to reflect the datasets being compared.
 
 ---
 
 ## 6. Generating Graphs 
 
-Finally once all polling data has been gathered and the detectors have been ran for each desired scenario, graphs should be generated.
+Once the datasets have been collected and the detection algorithms have been executed, generate the comparison graphs:
 
 ```bash
 python graph.py
 ```
 
-This creates overlay comparison graphs one for the feature I am overwriting and the exact output variable it should affect with normal, noisy attack and stealthy attack. Detector probability and anomaly graphs are also created for the 4 desired situations giving the desired feature which can be changed.
+The script produces:
+
+overlay graphs comparing normal, noisy and stealthy attack behaviour
+Random Forest probability graphs
+Kalman residual graphs
+CUSUM score graphs
+
+The plotted feature can be changed within graph.py.
