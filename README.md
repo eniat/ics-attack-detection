@@ -149,5 +149,3 @@ Detection is less reliable during transition periods where normal plant behaviou
 This repository is provided for portfolio and review purposes only.
 
 All rights are reserved. No permission is granted to copy, redistribute, submit, or reuse this work, in whole or in part, for academic coursework, assessment, or commercial purposes.
-
-Where this repository relates to university coursework, it is shared only to demonstrate my own technical work and should not be used by other students as a submission or solution.
