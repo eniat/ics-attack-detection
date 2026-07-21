@@ -15,7 +15,7 @@ jobs:
           from pypdf import PdfReader, PdfWriter
           from pathlib import Path
 
-          TITLE = "REPLACE ME"
+          TITLE = "	False data injection attacks and detection in a nuclear plant control system"
 
           for path in Path(".").rglob("*.pdf"):
               reader = PdfReader(path)
