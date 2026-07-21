@@ -1,0 +1,34 @@
+name: strip pdf metadata
+on: workflow_dispatch
+
+permissions:
+  contents: write
+
+jobs:
+  strip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install pypdf
+      - run: |
+          python - <<'PY'
+          from pypdf import PdfReader, PdfWriter
+          from pathlib import Path
+
+          TITLE = "REPLACE ME"
+
+          for path in Path(".").rglob("*.pdf"):
+              reader = PdfReader(path)
+              writer = PdfWriter()
+              for page in reader.pages:
+                  writer.add_page(page)
+              writer.add_metadata({"/Author": "Taine Morton", "/Title": TITLE})
+              with open(path, "wb") as fh:
+                  writer.write(fh)
+              print("cleaned", path)
+          PY
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Strip stale author metadata from report PDFs" || echo "no changes"
+          git push
