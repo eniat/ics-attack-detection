@@ -31,16 +31,18 @@ Detection approaches:
 ## Repository Structure
 | File | Purpose |
 |---|---|
-| `opcua.py` | Defines OPC UA node enums and maps them to node IDs. |
-| `polling.py` | Polls OPC UA nodes and writes timestamped CSV datasets. |
-| `attack.py` | Runs the stealthy drift and masking attack. |
-| `stealthy.py` | Implements gradual drift and output replay masking. |
-| `noisy.py` | Runs the noisy overwrite attack. |
-| `overwrite.py` | Contains overwrite, oscillation, and masking helper functions. |
-| `random_forest.py` | Trains and evaluates the Random Forest detector. |
-| `kalsum.py` | Implements Kalman residual scoring and CUSUM detection. |
-| `graph.py` | Generates overlay and detector comparison graphs. |
-| `requirements.txt` | Python dependencies for analysis and visualisation. |
+| `code/opcua.py` | Defines OPC UA node enums and maps them to node IDs. |
+| `code/polling.py` | Polls OPC UA nodes and writes timestamped CSV datasets. |
+| `code/attack.py` | Runs the stealthy drift and masking attack. |
+| `code/stealthy.py` | Implements gradual drift and output replay masking. |
+| `code/noisy.py` | Runs the noisy overwrite attack. |
+| `code/overwrite.py` | Contains overwrite, oscillation, and masking helper functions. |
+| `code/random_forest.py` | Trains and evaluates the Random Forest detector. |
+| `code/kalsum.py` | Implements Kalman residual scoring and CUSUM detection. |
+| `code/graph.py` | Generates overlay and detector comparison graphs. |
+| `code/requirements.txt` | Python dependencies for analysis and visualisation. |
+| `false-data-injection-attacks-and-detection.pdf` | Written report and analysis. |
+| `LICENSE.txt` | Usage terms. |
 
 ## Environment
 The attack and polling scripts assume access to the simulated OPC UA server:
@@ -50,6 +52,7 @@ opc.tcp://10.2.1.10:53530/
 This endpoint is the default in `polling.py`, `attack.py`, and `noisy.py`. Update the endpoint in the scripts if your simulation uses a different address.
 
 ## Installation
+All commands in this README are run from the code/ directory.
 Create and activate a virtual environment:
 ```bash
 python3 -m venv .venv
@@ -57,6 +60,9 @@ source .venv/bin/activate
 ```
 Install dependencies:
 ```bash
+cd code
+python -m venv .venv
+source .venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
@@ -65,12 +71,12 @@ pip install -r requirements.txt
 
 Before each run, edit the `CSV_PATH` value in `polling.py`:
 ```python
-CSV_PATH = "normal_all.csv"
+CSV_PATH = "normal.csv"
 ```
 Common datasets:
 | Dataset | Purpose |
 |---|---|
-| `normal_all.csv` | Stable normal baseline. |
+| `normal.csv` | Stable normal baseline. |
 | `attack_all.csv` | Stealthy attack data. |
 | `attack_SG.csv` | Noisy overwrite attack data. |
 
